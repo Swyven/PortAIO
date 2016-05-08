@@ -103,6 +103,7 @@ namespace TwistedFate
 
             misc = Config.AddSubMenu("Misc", "Misc");
             misc.Add("PingLH", new CheckBox("Ping low health enemies (Only local)"));
+            misc.Add("DontGoldCardDuringCombo", new CheckBox("Don't select gold card on combo", false));
 
             drawings = Config.AddSubMenu("Drawings", "Drawings");
             drawings.Add("Qcircle", new CheckBox("Q Range"));
@@ -305,7 +306,7 @@ namespace TwistedFate
             var combo = Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
 
             //Select cards.
-            if (getKeyBindItem(w, "SelectYellow") || combo)
+            if (getKeyBindItem(w, "SelectYellow") || combo && !getCheckBoxItem(misc, "DontGoldCardDuringCombo"))
             {
                 CardSelector.StartSelecting(Cards.Yellow);
             }
