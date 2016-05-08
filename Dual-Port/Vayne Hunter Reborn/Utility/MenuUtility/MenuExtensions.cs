@@ -4,6 +4,7 @@ using LeagueSharp.Common;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy;
+using EloBuddy.SDK;
 
 namespace VayneHunter_Reborn.Utility.MenuUtility
 {
@@ -23,24 +24,28 @@ namespace VayneHunter_Reborn.Utility.MenuUtility
             menu.Add(name, new Slider(displayName, defMana));
         }
 
-        public static bool IsEnabledAndReady(this Spell spell, string mode, bool checkMana = true)
+        public static bool IsEnabledAndReady(this LeagueSharp.Common.Spell spell, string mode, bool checkMana = true)
         {
             var m = Variables.Menu;
+
             if (mode.Contains("combo"))
             {
                 m = MenuGenerator.comboMenu;
                 mode = "combo";
             }
+
             if (mode.Contains("harass"))
             {
                 m = MenuGenerator.harassMenu;
             }
+
             if (mode.Contains("lasthit"))
             {
                 m = MenuGenerator.farmMenu;
                 mode = "lasthit";
             }
-            if (mode.Contains("laneclear") || mode.Contains("jungle") || mode.Contains("clear"))
+
+            if (mode.Contains("clear"))
             {
                 m = MenuGenerator.farmMenu;
                 mode = "laneclear";
@@ -48,13 +53,6 @@ namespace VayneHunter_Reborn.Utility.MenuUtility
 
             var name = string.Format("dz191.vhr.{0}.use{1}", mode.ToLower(), spell.Slot.ToString().ToLower());
             var mana = string.Format("dz191.vhr.{0}.mm.{1}.mana", mode.ToLower(), spell.Slot.ToString().ToLower());
-
-            //Console.WriteLine(mana);
-            //Console.WriteLine(name);
-
-            //dz191.vhr.farm.mm.q.mana
-            //dz191.vhr.farm.useq
-            //dz191.vhr.laneclear.useq
 
             if (m[name] != null && m[mana] != null)
             {
