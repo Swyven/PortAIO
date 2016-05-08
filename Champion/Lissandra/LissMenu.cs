@@ -32,6 +32,8 @@ namespace SephLissandra
             comboMenu.Add("Combo.ecountW", new Slider("Enemies count for 2nd E (W)", 2, 0, 5));
             comboMenu.Add("Combo.ecountR", new Slider("Enemies count for 2nd E (R)", 2, 0, 5));
             comboMenu.Add("Combo.Rcount", new Slider("Enemies count for self Ult", 2, 0, 5));
+            comboMenu.Add("Combo.MinRHealth", new Slider("Min Enemy Health To Ult them", 25, 1, 100));
+
 
             ksMenu = Config.AddSubMenu("Killsteal", "Killsteal");
             ksMenu.Add("Killsteal", new CheckBox("KillSteal"));
