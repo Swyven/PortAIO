@@ -204,6 +204,20 @@ namespace PortAIO
                                 break;
                         }
                         break;
+                    case "xerath":
+                        switch (Loader.xerath)
+                        {
+                            case 0:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 1:
+                                ElXerath.Xerath.Game_OnGameLoad();
+                                break;
+                            default:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                        }
+                        break;
                     case "anivia": // OKTW - Sebby - All Seeby champs go down here
                     case "thresh":
                     case "annie":
@@ -219,7 +233,6 @@ namespace PortAIO
                     case "sivir":
                     case "syndra":
                     case "velkoz":
-                    case "xerath":
                     case "swain":
                     case "urgot":
                     case "ahri":
