@@ -104,7 +104,14 @@ namespace VayneHunter_Reborn.Skills.Tumble
                 {
                     DefaultQCast(Game.CursorPos, firstMinion);
                     Orbwalker.ForcedTarget = firstMinion;
+                } else
+                {
+                    Orbwalker.ForcedTarget = null;
                 }
+            }
+            else
+            {
+                Orbwalker.ForcedTarget = null;
             }
 
         }
