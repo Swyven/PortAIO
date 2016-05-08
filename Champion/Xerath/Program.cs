@@ -239,7 +239,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                             .OrderByDescending(x => x.Health)
                             .FirstOrDefault();
 
-                    if (minion != null)
+                    if (minion != null && OktwCommon.CanHarras())
                         Orbwalker.ForcedTarget = minion;
                 }
             }
