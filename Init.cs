@@ -70,10 +70,11 @@ namespace PortAIO
                     UniversalRecallTracker.Program.Main();
                 }
 
-                //if (Loader.useSkin)
-                //{
+                if (Loader.useSkin)
+                {
                     //SkinsSharp.Program.GameLoad();
-                //}
+                    SDK_SkinChanger.Program.Load();
+                }
 
                 if (Loader.useTracker)
                 {

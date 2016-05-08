@@ -824,6 +824,7 @@
     <Compile Include="Utility\ElUtilitySuite\Summoners\Smite.cs" />
     <Compile Include="Utility\ElUtilitySuite\Trackers\JungleTracker.cs" />
     <Compile Include="Utility\ElUtilitySuite\Utility\AntiStealth.cs" />
+    <Compile Include="Utility\ElUtilitySuite\Utility\Flash.cs" />
     <Compile Include="Utility\ElUtilitySuite\Utility\UltimateLeveler.cs" />
     <Compile Include="Utility\EzEvade\Core\Evade.cs" />
     <Compile Include="Utility\EzEvade\Core\EvadeHelper.cs" />
@@ -895,6 +896,8 @@
     <Compile Include="Utility\RandomUlt\Helpers\LastPositions.cs" />
     <Compile Include="Utility\RandomUlt\Program.cs" />
     <Compile Include="Utility\SkinHack\Program.cs" />
+    <Compile Include="Utility\SkinSDK\MenuConfig.cs" />
+    <Compile Include="Utility\SkinSDK\Program.cs" />
     <Compile Include="Utility\UniversalGankAlerter\Program.cs" />
     <Compile Include="Utility\UniversalPingBlock\Program.cs" />
     <Compile Include="Utility\UniversalRecallTracker\Program.cs" />
