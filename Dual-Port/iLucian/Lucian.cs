@@ -64,8 +64,10 @@ namespace iLucian
             if (!gapcloser.Sender.IsEnemy || !(gapcloser.End.Distance(ObjectManager.Player.ServerPosition) < 350))
                 return;
 
-            var extendedPosition = ObjectManager.Player.ServerPosition.LSExtend(Game.CursorPos, Variables.Spell[Variables.Spells.E].Range);
-            if (extendedPosition.IsSafe(Variables.Spell[Variables.Spells.E].Range) && extendedPosition.CountAlliesInRange(650f) > 0)
+            var extendedPosition = ObjectManager.Player.ServerPosition.LSExtend(Game.CursorPos,
+                Variables.Spell[Variables.Spells.E].Range);
+            if (extendedPosition.IsSafe(Variables.Spell[Variables.Spells.E].Range) &&
+                extendedPosition.CountAlliesInRange(650f) > 0)
             {
                 Variables.Spell[Variables.Spells.E].Cast(extendedPosition);
             }
@@ -80,7 +82,7 @@ namespace iLucian
 
             var target = TargetSelector.GetTarget(Variables.Spell[Variables.Spells.Q].Range,
                 DamageType.Physical);
-            if (target == null || !(ObjectManager.Player.Distance(target) < ObjectManager.Player.AttackRange))
+            if (target == null)
                 return;
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
@@ -372,29 +374,38 @@ namespace iLucian
             switch (getBoxItem(MenuGenerator.comboOptions, "com.ilucian.combo.eMode"))
             {
                 case 0: // kite
-                    var hypotheticalPosition = ObjectManager.Player.ServerPosition.LSExtend(Game.CursorPos, Variables.Spell[Variables.Spells.E].Range);
-                    if (ObjectManager.Player.HealthPercent <= 70 && target.HealthPercent >= ObjectManager.Player.HealthPercent)
+                    var hypotheticalPosition = ObjectManager.Player.ServerPosition.LSExtend(Game.CursorPos,
+                        Variables.Spell[Variables.Spells.E].Range);
+                    if (ObjectManager.Player.HealthPercent <= 70 &&
+                        target.HealthPercent >= ObjectManager.Player.HealthPercent)
                     {
-                        if (ObjectManager.Player.Position.Distance(ObjectManager.Player.ServerPosition) >= 35 && target.Distance(ObjectManager.Player.ServerPosition) < target.Distance(ObjectManager.Player.Position) && hypotheticalPosition.IsSafe(Variables.Spell[Variables.Spells.E].Range))
+                        if (ObjectManager.Player.Position.Distance(ObjectManager.Player.ServerPosition) >= 35 &&
+                            target.Distance(ObjectManager.Player.ServerPosition) <
+                            target.Distance(ObjectManager.Player.Position) &&
+                            hypotheticalPosition.IsSafe(Variables.Spell[Variables.Spells.E].Range))
                         {
                             Variables.Spell[Variables.Spells.E].Cast(hypotheticalPosition);
                         }
                     }
 
-                    if (hypotheticalPosition.IsSafe(Variables.Spell[Variables.Spells.E].Range) && hypotheticalPosition.Distance(target.ServerPosition) <= Orbwalking.GetRealAutoAttackRange(null) && (hypotheticalPosition.Distance(target.ServerPosition) > 400) && !Variables.HasPassive)
+                    if (hypotheticalPosition.IsSafe(Variables.Spell[Variables.Spells.E].Range) &&
+                        hypotheticalPosition.Distance(target.ServerPosition) <= Orbwalking.GetRealAutoAttackRange(null) &&
+                        (hypotheticalPosition.Distance(target.ServerPosition) > 400) && !Variables.HasPassive)
                     {
                         Variables.Spell[Variables.Spells.E].Cast(hypotheticalPosition);
                     }
                     break;
 
                 case 1: // side
-                    Variables.Spell[Variables.Spells.E].Cast(Deviation(ObjectManager.Player.Position.To2D(), target.Position.To2D(), 65).To3D());
+                    Variables.Spell[Variables.Spells.E].Cast(
+                        Deviation(ObjectManager.Player.Position.To2D(), target.Position.To2D(), 65).To3D());
                     break;
 
                 case 2: //Cursor
                     if (Game.CursorPos.IsSafe(475))
                     {
-                        Variables.Spell[Variables.Spells.E].Cast(ObjectManager.Player.Position.Extend(Game.CursorPos, 400));
+                        Variables.Spell[Variables.Spells.E].Cast(ObjectManager.Player.Position.Extend(Game.CursorPos,
+                            65f));
                     }
                     break;
 
