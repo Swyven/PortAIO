@@ -13,6 +13,7 @@ using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Menu;
+using iLucian.Utils;
 
 namespace iLucian
 {
@@ -63,10 +64,8 @@ namespace iLucian
             if (!gapcloser.Sender.IsEnemy || !(gapcloser.End.Distance(ObjectManager.Player.ServerPosition) < 350))
                 return;
 
-            var extendedPosition = ObjectManager.Player.ServerPosition.LSExtend(Game.CursorPos,
-                Variables.Spell[Variables.Spells.E].Range);
-            if (extendedPosition.IsSafe(Variables.Spell[Variables.Spells.E].Range) &&
-                extendedPosition.CountAlliesInRange(650f) > 0)
+            var extendedPosition = ObjectManager.Player.ServerPosition.LSExtend(Game.CursorPos, Variables.Spell[Variables.Spells.E].Range);
+            if (extendedPosition.IsSafe(Variables.Spell[Variables.Spells.E].Range) && extendedPosition.CountAlliesInRange(650f) > 0)
             {
                 Variables.Spell[Variables.Spells.E].Cast(extendedPosition);
             }
@@ -165,9 +164,74 @@ namespace iLucian
             Variables.Spell[Variables.Spells.R].SetSkillshot(0.2f, 110f, 2500, true, SkillshotType.SkillshotLine);
         }
 
+        public void Killsteal()
+        {
+            var target = TargetSelector.GetTarget(Variables.Spell[Variables.Spells.E].Range + Variables.Spell[Variables.Spells.Q2].Range, DamageType.Physical);
+
+            if (!getCheckBoxItem(MenuGenerator.miscOptions, "com.ilucian.misc.eqKs"))
+            {
+                return;
+            }
+
+            if (target.IsValidTarget(Variables.Spell[Variables.Spells.E].Range + Variables.Spell[Variables.Spells.Q2].Range) && Variables.Spell[Variables.Spells.Q].GetDamage(target) - 20 >= target.Health)
+            {
+                if (target.IsValidTarget(Variables.Spell[Variables.Spells.Q].Range))
+                {
+                    Variables.Spell[Variables.Spells.Q].Cast(target);
+                }
+
+                if (target.IsValidTarget(Variables.Spell[Variables.Spells.Q2].Range) && !target.IsValidTarget(Variables.Spell[Variables.Spells.Q].Range))
+                {
+                    CastExtendedQ();
+                }
+                else if (Variables.Spell[Variables.Spells.E].IsReady() && Variables.Spell[Variables.Spells.Q].IsReady())
+                {
+                    CastEqKillsteal();
+                }
+            }
+        }
+
+        private void CastEqKillsteal()
+        {
+            var target = TargetSelector.GetTarget(Variables.Spell[Variables.Spells.E].Range + Variables.Spell[Variables.Spells.Q2].Range, DamageType.Physical);
+
+            if (!target.IsValidTarget(Variables.Spell[Variables.Spells.E].Range + Variables.Spell[Variables.Spells.Q2].Range))
+                return;
+
+            var dashSpeed = (int)(Variables.Spell[Variables.Spells.E].Range / (700 + ObjectManager.Player.MoveSpeed));
+            var extendedPrediction = GetExtendedPrediction(target, dashSpeed);
+
+            var minions = ObjectManager.Get<Obj_AI_Minion>().Where(x => x.IsEnemy && x.IsValid && x.Distance(extendedPrediction, true) < 900 * 900).OrderByDescending(x => x.Distance(extendedPrediction));
+
+            foreach (var minion in
+                minions.Select(x => LeagueSharp.Common.Prediction.GetPrediction(x, dashSpeed)).Select(pred => MathHelper.GetCicleLineInteraction(pred.UnitPosition.To2D(), extendedPrediction.To2D(), ObjectManager.Player.ServerPosition.To2D(), Variables.Spell[Variables.Spells.E].Range)).Select(inter => inter.GetBestInter(target)))
+            {
+                if (minion.X == 0)
+                    return;
+
+                if (!NavMesh.GetCollisionFlags(minion.To3D()).HasFlag(CollisionFlags.Wall) && !NavMesh.GetCollisionFlags(minion.To3D()).HasFlag(CollisionFlags.Building) && minion.To3D().IsSafe(Variables.Spell[Variables.Spells.E].Range))
+                {
+                    Console.WriteLine("EQ KILLSTEAL THO");
+                    Variables.Spell[Variables.Spells.E].Cast((Vector3)minion);
+                }
+            }
+        }
+
+        //Detuks ofc
+        private Vector3 GetExtendedPrediction(AIHeroClient target, int delay)
+        {
+            var res = Variables.Spell[Variables.Spells.Q2].GetPrediction(target);
+            var del = LeagueSharp.Common.Prediction.GetPrediction(target, delay);
+
+            var dif = del.UnitPosition - target.ServerPosition;
+            return res.CastPosition + dif;
+        }
+
         private void OnUpdate(EventArgs args)
         {
             Variables.Spell[Variables.Spells.W].Collision = getCheckBoxItem(MenuGenerator.miscOptions, "com.ilucian.misc.usePrediction");
+
+            Killsteal();
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
@@ -346,16 +410,13 @@ namespace iLucian
             {
                 return;
             }
-            var target = TargetSelector.GetTarget(Variables.Spell[Variables.Spells.Q2].Range, DamageType.Physical);
-            var minionsAround = MinionManager.GetMinions(Variables.Spell[Variables.Spells.Q].Range);
-            foreach (var minion in minionsAround)
+            var target = TargetSelector.SelectedTarget != null && TargetSelector.SelectedTarget.Distance(ObjectManager.Player) < 1800 ? TargetSelector.SelectedTarget : TargetSelector.GetTarget(Variables.Spell[Variables.Spells.Q2].Range, DamageType.Physical);
+            var predictionPosition = Variables.Spell[Variables.Spells.Q2].GetPrediction(target);
+            var minions = MinionManager.GetMinions(ObjectManager.Player.Position, Variables.Spell[Variables.Spells.Q].Range);
+
+            foreach (var minion in from minion in minions let polygon = new LeagueSharp.Common.Geometry.Polygon.Rectangle(ObjectManager.Player.ServerPosition, ObjectManager.Player.ServerPosition.LSExtend(minion.ServerPosition, Variables.Spell[Variables.Spells.Q2].Range), 65f) where polygon.IsInside(predictionPosition.CastPosition) select minion)
             {
-                var qRetangle = new EloBuddy.SDK.Geometry.Polygon.Rectangle(ObjectManager.Player.Position, ObjectManager.Player.Position.LSExtend(minion.Position, Variables.Spell[Variables.Spells.Q2].Range), Variables.Spell[Variables.Spells.Q2].Width);
-                var prediction = Variables.Spell[Variables.Spells.Q2].GetPrediction(target);
-                if (!qRetangle.IsOutside(prediction.UnitPosition.To2D()) && prediction.Hitchance >= HitChance.High)
-                {
-                    Variables.Spell[Variables.Spells.Q].Cast(minion);
-                }
+                Variables.Spell[Variables.Spells.Q].Cast(minion);
             }
         }
 

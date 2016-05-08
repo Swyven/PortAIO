@@ -37,6 +37,7 @@ namespace iLucian.MenuHelper
             miscOptions = Variables.Menu.AddSubMenu(":: iLucian - Misc Options", "com.ilucian.misc");
             miscOptions.Add("com.ilucian.misc.usePrediction", new CheckBox("Use W Pred", true));
             miscOptions.Add("com.ilucian.misc.gapcloser", new CheckBox("Use E For Gapcloser", true));
+            miscOptions.Add("com.ilucian.misc.eqKs", new CheckBox("EQ - Killsteal", true));
         }
     }
 }
