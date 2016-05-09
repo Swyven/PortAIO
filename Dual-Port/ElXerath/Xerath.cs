@@ -584,7 +584,7 @@
 
             if (spells[Spells.R].IsReady() && showNotifications && Environment.TickCount - lastNotification > 5000)
             {
-                foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget() && (float)Player.GetSpellDamage(h, SpellSlot.R) * 3 > h.Health))
+                foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget() && !h.IsAlly && (float)Player.GetSpellDamage(h, SpellSlot.R) * 3 > h.Health))
                 {
                     Chat.Print(enemy.ChampionName + ": is killable", Color.White, 4000);
                     lastNotification = Environment.TickCount;
