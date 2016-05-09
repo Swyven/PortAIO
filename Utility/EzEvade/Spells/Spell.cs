@@ -7,6 +7,7 @@ using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
 using SharpDX;
+using LeagueSharp.Common;
 
 namespace ezEvade
 {
@@ -232,7 +233,26 @@ namespace ezEvade
             spell.currentNegativePosition = spell.GetCurrentSpellPosition(true);
 
             spell.dangerlevel = spell.GetSpellDangerLevel();
-            //spell.radius = spell.GetSpellRadius();
+
+            if (spell.info.name == "TaricE")
+            {
+                var taric = HeroManager.Enemies.FirstOrDefault(x => x.ChampionName == "Taric");
+                if (taric != null)
+                {
+                    spell.currentSpellPosition = taric.ServerPosition.To2D();
+                    spell.endPos = taric.ServerPosition.To2D() + spell.direction * spell.info.range;
+                }
+            }
+
+            if (spell.info.name == "TaricE2")
+            {
+                var partner = HeroManager.Enemies.FirstOrDefault(x => x.HasBuff("taricwleashactive") && x.ChampionName != "Taric");
+                if (partner != null)
+                {
+                    spell.currentSpellPosition = partner.ServerPosition.To2D();
+                    spell.endPos = partner.ServerPosition.To2D() + spell.direction * spell.info.range;
+                }
+            }
         }
 
         public static Vector2 GetCurrentSpellPosition(this Spell spell, bool allowNegative = false, float delay = 0, 
@@ -320,7 +340,7 @@ namespace ezEvade
             var endRightPos = endPos + pSpellDir * (spellRadius + myBoundingRadius);
             var endLeftPos = endPos - pSpellDir * (spellRadius + myBoundingRadius);
 
-            List<Geometry.IntersectionResult> intersects = new List<Geometry.IntersectionResult>();
+            List<EloBuddy.SDK.Geometry.IntersectionResult> intersects = new List<EloBuddy.SDK.Geometry.IntersectionResult>();
             Vector2 heroPos = ObjectManager.Player.ServerPosition.To2D();
 
             intersects.Add(a.Intersection(b, startRightPos, startLeftPos));
