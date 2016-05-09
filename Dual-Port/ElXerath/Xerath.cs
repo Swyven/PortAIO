@@ -197,7 +197,7 @@
             var useR = getCheckBoxItem(ElXerathMenu.rMenu, "ElXerath.R.AutoUseR");
             var tapkey = getKeyBindItem(ElXerathMenu.rMenu, "ElXerath.R.OnTap");
             var ultRadius = getSliderItem(ElXerathMenu.rMenu, "ElXerath.R.Radius");
-            var drawROn = getCheckBoxItem(ElXerathMenu.rMenu, "ElXerath.Draw.RON");
+            var drawROn = getCheckBoxItem(ElXerathMenu.miscMenu, "ElXerath.Draw.RON");
 
             if (!useR)
             {
