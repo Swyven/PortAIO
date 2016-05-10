@@ -363,6 +363,10 @@
 
         private static void CastRFlash(Obj_AI_Base target)
         {
+            if (!(Player.Level >= 6))
+            {
+                return;
+            }
             var targetSelect = TargetSelector.SelectedTarget ?? TargetSelector.GetTarget(R.Range, DamageType.Physical);
             if (!targetSelect.LSIsValidTarget() || !targetSelect.Compare(target) || target.Health + target.AttackShield <= R.GetDamage(target) || targetSelect == null)
             {
