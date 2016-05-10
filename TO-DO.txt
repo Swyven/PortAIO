@@ -1,6 +1,20 @@
 ﻿To-Do :
 - Fix Ezreal still stacking tear even after 750 stacks
 - TF Lane Clear
+- Viktor W Gap Closer/Interrupt
+- Kalista E calculation & Dragon KS
+- Check Sejuani
+- Check loading with GP
+- Check Anivia randomly casting spells
+- Mordekaiser Crashing on Ult @ Low HP
+- Fix Karthus Orbwalker
+- Rengar jump on Vayne assemblies
+- Fix Lee Sin Crash on Combo
+- Check Poppy Crash
+- Check TF ping low enemy
+- Caitlyn on W hard CC
+- Bard Flee
+- Check loading from Valvrave to YasuoPro
 
 ------------------------------------------------------------------------
 
@@ -37,3 +51,4 @@ Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
 - Swiftly Teemo
 - EzEvade (full)
 - ElEasy Ryze
+- Tyler1.exe
