@@ -3509,24 +3509,7 @@ namespace ezEvade
                 spellType = SpellType.Line,
 
             });
-
-            Spells.Add(
-            new SpellData
-            {
-                charName = "Zyra",
-                dangerlevel = 2,
-                missileName = "ZyraPassiveDeathManager",
-                name = "Zyra Passive",
-                projectileSpeed = 1900,
-                radius = 70,
-                range = 1474,
-                spellDelay = 500,
-                spellKey = SpellSlot.Q,
-                spellName = "ZyraPassiveDeathManager",
-                spellType = SpellType.Line,
-
-            });
-
+            
             //Spells.Add(
             //new SpellData
             //{
