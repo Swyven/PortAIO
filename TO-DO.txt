@@ -1,5 +1,4 @@
 ﻿To-Do :
-- Kalista E calculation & Dragon KS
 - Check Sejuani
 - Check loading with GP
 - Check Anivia randomly casting spells
