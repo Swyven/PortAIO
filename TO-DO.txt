@@ -1,6 +1,4 @@
 ﻿To-Do :
-- Fix Ezreal still stacking tear even after 750 stacks
-- TF Lane Clear
 - Viktor W Gap Closer/Interrupt
 - Kalista E calculation & Dragon KS
 - Check Sejuani
@@ -15,6 +13,7 @@
 - Caitlyn on W hard CC
 - Bard Flee
 - Check loading from Valvrave to YasuoPro
+- Check Kog'Maw R
 
 ------------------------------------------------------------------------
 
