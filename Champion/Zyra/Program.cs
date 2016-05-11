@@ -17,7 +17,7 @@ namespace D_Zyra
     {
         private const string ChampionName = "Zyra";
 
-        private static Spell _q, _w, _e, _r, _passive;
+        private static Spell _q, _w, _e, _r;
 
         private static Menu _config;
 
@@ -54,12 +54,10 @@ namespace D_Zyra
             _w = new Spell(SpellSlot.W, 825);
             _e = new Spell(SpellSlot.E, 1100);
             _r = new Spell(SpellSlot.R, 700);
-            _passive = new Spell(SpellSlot.Q, 1470);
 
             _q.SetSkillshot(0.6f, 85f, float.MaxValue, false, SkillshotType.SkillshotCircle);
             _e.SetSkillshot(0.5f, 70f, 1150f, false, SkillshotType.SkillshotLine);
             _r.SetSkillshot(0.5f, 500f, 20f, false, SkillshotType.SkillshotCircle);
-            _passive.SetSkillshot(0.5f, 70f, 1400f, false, SkillshotType.SkillshotLine);
 
             //D Zyra
             _config = MainMenu.AddMenu("D-Zyra", "D-Zyra");
@@ -129,11 +127,6 @@ namespace D_Zyra
 
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            if (ZyraisZombie())
-            {
-                CastPassive();
-                return;
-            }
             if (getKeyBindItem(comboMenu, "useRaim") && _r.IsReady())
             {
                 var t = TargetSelector.GetTarget(_r.Range, DamageType.Magical);
@@ -479,14 +472,6 @@ namespace D_Zyra
                 Utility.DelayAction.Add(50, () => _w.Cast(new Vector3(pos.X - 5, pos.Y - 5, pos.Z)));
                 Utility.DelayAction.Add(150, () => _w.Cast(new Vector3(pos.X + 5, pos.Y + 5, pos.Z)));
             }
-        }
-
-        private static void CastPassive()
-        {
-            if (!_passive.IsReady()) return;
-            var target = TargetSelector.GetTarget(_passive.Range, DamageType.Magical);
-            if (!target.IsValidTarget(_e.Range)) return;
-            _passive.CastIfHitchanceEquals(target, HitChance.High);
         }
 
         private static void KillSteal()
