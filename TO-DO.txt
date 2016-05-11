@@ -1,5 +1,4 @@
 ﻿To-Do :
-- Viktor W Gap Closer/Interrupt
 - Kalista E calculation & Dragon KS
 - Check Sejuani
 - Check loading with GP
